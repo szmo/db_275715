@@ -36,13 +36,11 @@ class Interpreter(object):
         self.current_token = None
         self.current_char = self.text[self.pos]
         self.current_token = self.get_next_token()
-        #print('at start im' + str(self.current_token) + ' now pos is ' + str(self.pos))
 
 
     def error(self, token, pos):
         sys.stderr.write('Unexpected token {0} at {1}'.format(token.type, pos))
         sys.exit(-1)
-        #raise Exception('Invalid syntax')
 
 
     def pos_helper(self):
@@ -103,7 +101,6 @@ class Interpreter(object):
                 return Token(RPAREN, ')')
 
             self.error(self.token, self.pos)
-            #self.error()
 
         return Token(EOF, None)
 
@@ -111,22 +108,18 @@ class Interpreter(object):
     def eat(self, token_type):
         if self.current_token.type == token_type:
             self.current_token = self.get_next_token()
-            #print('eating ' + token_type + ' now pos is ' + str(self.pos) )
         else:
-            #self.error()
             self.error(self.current_token, (self.pos-1))
 
 
     def factor(self):
         token = self.current_token
-        #print(token)
         if token.type == INTEGER:
             self.eat(INTEGER)
             return token.value
         elif token.type == LPAREN:
             self.eat(LPAREN)
             result = self.expr()
-            #print(self.current_token)
             self.eat(RPAREN)
             return result
         if self.current_token.type == EOF:
@@ -156,7 +149,6 @@ class Interpreter(object):
 
 
     def expr(self):
-        #self.current_token = self.get_next_token()
         result = self.term()
 
         while self.current_token.type in (PLUS, MINUS):
